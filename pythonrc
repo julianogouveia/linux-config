@@ -1,0 +1,29 @@
+#!/bin/bash
+
+#   Change to a given virtualenv project name who is in ~/.virtualenvs.
+#   The function looks inside the ~/.virtualenvs directory and tries 
+# to find the activate virtualenv command. If it exists, the activate 
+# is executed and the current directory is switched to the project directory.
+
+p () {
+	PROJECT_NAME=$1
+
+	MESSAGES[0]="You must pass the PROJECT_NAME parameter."
+	MESSAGES[1]="The project $PROJECT_NAME doesn't exists."
+
+	if [ -z $PROJECT_NAME ]; then
+		echo "${MESSAGES[0]}"
+		return
+	fi
+
+	ACTIVATE_FILE="$HOME/.virtualenvs/$PROJECT_NAME/bin/activate"
+	PROJECT_FILE="$HOME/.virtualenvs/$PROJECT_NAME/.project"
+
+	if ! [ -a $ACTIVATE_FILE ] || ! [ -a $PROJECT_FILE ]; then
+		echo "${MESSAGES[1]}"
+		return
+	fi
+
+	source $ACTIVATE_FILE
+	cd $(cat $PROJECT_FILE)
+}
