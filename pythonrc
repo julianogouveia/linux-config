@@ -2,6 +2,23 @@
 
 
 #####################################################################################
+####################################### Pyenv #######################################
+#####################################################################################
+
+#   Set the default linux Python version
+export PYENV_VERSION="3.5.1"
+
+#   Set the pyenv root path
+export PYENV_ROOT="$HOME/.pyenv"
+
+#   Concatenate the pyenv path before the linux path to pyenv be founded first
+export PATH="$PYENV_ROOT/bin:$PATH"
+
+#   Load the pyenv dependences to everything works fine
+eval "$(pyenv init -)"
+
+
+#####################################################################################
 ################################# Virtualenvwrapper #################################
 #####################################################################################
 
