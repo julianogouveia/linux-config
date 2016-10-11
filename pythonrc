@@ -1,5 +1,23 @@
 #!/bin/bash
 
+
+#####################################################################################
+################################# Virtualenvwrapper #################################
+#####################################################################################
+
+
+#   Save all created virtualenv's inside the $HOME/.virtualenvs directory.
+export WORKON_HOME=$HOME/.virtualenvs
+
+#   Load the virtualenvwrapper dependences
+source /usr/local/bin/virtualenvwrapper.sh
+
+#   Shows all created virtualenvs
+alias s="lsvirtualenv -b" 
+
+#   Exits from the current activate virtualenv
+alias d="deactivate"
+
 #   Change to a given virtualenv project name who is in ~/.virtualenvs.
 #   The function looks inside the ~/.virtualenvs directory and tries 
 # to find the activate virtualenv command. If it exists, the activate 
@@ -16,14 +34,47 @@ p () {
 		return
 	fi
 
-	ACTIVATE_FILE="$HOME/.virtualenvs/$PROJECT_NAME/bin/activate"
-	PROJECT_FILE="$HOME/.virtualenvs/$PROJECT_NAME/.project"
+	PROJECT_DIR="$WORKON_HOME/$PROJECT_NAME/"
+	PROJECT_FILE="$PROJECT_DIR/.project"
+	PROJECT_ACTIVATE="$PROJECT_DIR/bin/activate"
 
-	if ! [ -a $ACTIVATE_FILE ] || ! [ -a $PROJECT_FILE ]; then
+	if ! [ -a $PROJECT_ACTIVATE ] || ! [ -a $PROJECT_FILE ]; then
 		echo "${MESSAGES[1]}"
 		return
 	fi
 
-	source $ACTIVATE_FILE
+	source $PROJECT_ACTIVATE
 	cd $(cat $PROJECT_FILE)
+}
+
+
+#   Create a new Python virtualenv based on the current directory
+
+m () {
+	PROJECT_NAME=$1
+
+	MESSAGES[0]="You must pass the PROJECT_NAME parameter."
+
+	if [ -z $PROJECT_NAME ]; then
+		echo "${MESSAGES[0]}"
+		return
+	fi
+
+	mkvirtualenv $PROJECT_NAME -a ./
+}
+
+
+#   Remove a given virtualenvwrapper project
+
+r () {
+	PROJECT_NAME=$1
+
+	MESSAGES[0]="You must pass the PROJECT_NAME parameter."
+
+	if [ -z $PROJECT_NAME ]; then
+		echo "${MESSAGES[0]}"
+		return
+	fi
+
+	rmvirtualenv $PROJECT_NAME
 }
