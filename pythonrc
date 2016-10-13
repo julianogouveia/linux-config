@@ -35,8 +35,12 @@ alias s="lsvirtualenv -b"
 #   Exits from the current activate virtualenv
 alias d="deactivate"
 
+
 #   Back to the virtual activated project working directory
-alias b="cd $(cat $VIRTUAL_ENV/.project)"
+
+b () {
+	cd $(cat $VIRTUAL_ENV/.project)
+}
 
 
 #   Change to a given virtualenv project name who is in ~/.virtualenvs.
