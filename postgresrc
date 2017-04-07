@@ -1,0 +1,23 @@
+#!/bin/bash
+
+pg-create-database () {
+	DATABASE_NAME=$1
+
+	psql template1 -c "CREATE USER $DATABASE_NAME WITH PASSWORD '$DATABASE_NAME';"
+	psql template1 -c "CREATE DATABASE $DATABASE_NAME;"
+	psql template1 -c "ALTER DATABASE $DATABASE_NAME OWNER TO $DATABASE_NAME;"
+	psql template1 -c "ALTER USER $DATABASE_NAME CREATEDB;"
+}
+
+export -f pg-create-database
+
+
+recreate-database () {
+	DATABASE_NAME=$1
+
+	service postgresql restart
+	dropdb $DATABASE_NAME
+	createdb $DATABASE_NAME -O $DATABASE_NAME
+}
+
+export -f recreate-database
